@@ -42,14 +42,16 @@ class ProductResource extends Resource
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) =>
-                                $operation === 'create' ? $set('slug', Str::slug($state)) : null
+                                $operation === 'create' || $operation === 'edit' ? $set('slug', Str::slug($state)) : null
                             ),
 
                         TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
                             ->unique(Product::class, 'slug', ignoreRecord: true)
-                            ->readonly(),
+                            ->readonly()
+                            ->dehydrated()
+                            ->extraAttributes(['class' => 'bg-gray-100 text-gray-500 cursor-not-allowed']),
 
                         Forms\Components\MarkdownEditor::make('description')
                             ->columnSpanFull()
@@ -89,18 +91,18 @@ class ProductResource extends Resource
                     ]),
 
                     Forms\Components\Section::make('Status')->schema([
-                        Forms\Components\Toggle::make('In_stock')
+                        Forms\Components\Toggle::make('in_stock')
                             ->required()
                             ->default(true),
 
-                        Forms\Components\Toggle::make('Is_active')
+                        Forms\Components\Toggle::make('is_active')
                             ->required()
                             ->default(true),
 
-                        Forms\Components\Toggle::make('Is_featured')
+                        Forms\Components\Toggle::make('is_featured')
                             ->required(),
 
-                        Forms\Components\Toggle::make('On sale')
+                        Forms\Components\Toggle::make('on_sale')
                             ->required(),
                     ])
                 ])-> columnSpan(1)

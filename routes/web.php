@@ -8,7 +8,7 @@ Route::get('/categories', \App\Livewire\CategoriesPage::class)->name('categories
 
 Route::get('/products/', \App\Livewire\ProductsPage::class)->name('products');
 
-Route::get('/products/{product}', \App\Livewire\ProductPage::class)->name('product');
+Route::get('/products/{slug}', \App\Livewire\ProductPage::class)->name('product');
 
 Route::get('cart', \App\Livewire\CartPage::class)->name('cart');
 
@@ -21,9 +21,9 @@ Route::get('login', \App\Livewire\Auth\LoginPage::class)->name('login');
 
 Route::get('register', \App\Livewire\Auth\RegisterPage::class)->name('register');
 
-Route::get('forgot-password', \App\Livewire\Auth\ForgotPasswordPage::class)->name('forgot-password');
+Route::get('forgot', \App\Livewire\Auth\ForgotPasswordPage::class)->name('forgot-password');
 
-Route::get('reset-password', \App\Livewire\Auth\ResetPasswordPage::class)->name('reset-password');
+Route::get('reset', \App\Livewire\Auth\ResetPasswordPage::class)->name('reset-password');
 
 Route::get('success', \App\Livewire\SuccessPage::class)->name('success');
 
