@@ -33,7 +33,7 @@ class CartService
         } else {
             // If item does not exist, add it to the cart
             $cartItems[] = [
-                'product_id' => Product::find($product_id),
+                'product_id' => Product::find($product_id)->id,
                 'name' => Product::find($product_id)->name,
                 'price' => Product::find($product_id)->price,
                 'quantity' => 1,
@@ -43,7 +43,7 @@ class CartService
 
         self::addCartItemsToCookie($cartItems);
 
-        return count($cartItems);
+        return array_sum(array_column($cartItems, 'quantity'));
     }
 
     /**
@@ -53,7 +53,7 @@ class CartService
      * @return int
      */
 
-    static public function removeCartItem($product_id): int
+    static public function removeCartItem($product_id): array
     {
         $cartItems = self::getCartItemsFromCookie();
 
@@ -66,7 +66,7 @@ class CartService
 
         self::addCartItemsToCookie($cartItems);
 
-        return count($cartItems);
+        return $cartItems;
     }
 
     /**
@@ -123,6 +123,23 @@ class CartService
         return $cartItems;
     }
 
+    /**  
+     *  Get product count in the cart.
+     *  @ return int
+    */
+    static public function getProductCountInCart($product_id): int
+    {
+        $cartItems = self::getCartItemsFromCookie();
+
+        foreach ($cartItems as $item) {
+            if ($item['product_id'] === $product_id) {
+                return $item['quantity'];
+            }
+        }
+        // If product not found in cart, return 0
+        return 0;
+    }
+
     /**
      * Decrement item quantity in the cart.
      *
@@ -155,5 +172,32 @@ class CartService
         $cartItems = self::getCartItemsFromCookie();
 
         return array_sum(array_column($cartItems, 'total_amount'));
+    }
+    /**
+     * Get total count of the cart.
+     *
+     * @return float
+     */
+    static public function getTotalCount(): int
+    {
+        $cartItems = self::getCartItemsFromCookie();
+
+        return array_sum(array_column($cartItems, 'quantity'));
+    }
+
+    /**
+     * Get total count of the cart.
+     *
+     * @return float
+     */
+    static public function calculateGrandTotal($cartItems): int
+    {
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $total += $item['total_amount'];
+        }
+
+        return $total;
+
     }
 }

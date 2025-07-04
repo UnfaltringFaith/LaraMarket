@@ -2,13 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Partials\Navbar;
 use App\Models\Brand;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use Livewire\WithPagination;
-use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use App\Services\CartService;
+use Livewire\Attributes\Title;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 #[Title('Products Page')]
 class ProductsPage extends Component
@@ -27,11 +30,27 @@ class ProductsPage extends Component
     public $on_sale = false;
 
     #[Url]
-    public int $price_range = 1000;
+    public int $price_range = 500000;
 
     #[Url]
-    public $sort_by = 'latest';
+    public $sort_by = 'latest'; 
 
+    public function mount()
+    {
+            $this->dispatch('cartUpdated',  CartService::getTotalCount())->to(Navbar::class);
+    }
+    public function addProductToCart($product_id)
+    {
+        $cartCount = CartService::addItemToCart($product_id);
+        LivewireAlert::title('Item added to cart!')
+            ->position('bottom-end')
+            ->success()
+            ->timer(1000)
+            ->toast()
+            ->show();
+
+        $this->dispatch('cartUpdated',  $cartCount)->to(Navbar::class);
+    }
     public function render()
     {
 
