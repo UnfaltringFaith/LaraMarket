@@ -19,7 +19,8 @@ class Order extends Model
         'currency',
         'shipping_amount',
         'shipping_method',
-        'notes'
+        'notes',
+        'payment_id',
     ];
 
     public function items(){

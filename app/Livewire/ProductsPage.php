@@ -33,11 +33,11 @@ class ProductsPage extends Component
     public int $price_range = 500000;
 
     #[Url]
-    public $sort_by = 'latest'; 
+    public $sort_by = 'latest';
 
     public function mount()
     {
-            $this->dispatch('cartUpdated',  CartService::getTotalCount())->to(Navbar::class);
+        $this->dispatch('cartUpdated',  CartService::getTotalCount())->to(Navbar::class);
     }
     public function addProductToCart($product_id)
     {
@@ -58,13 +58,13 @@ class ProductsPage extends Component
             ->where('is_active', 1);
 
         if (!empty($this->selected_categories)) {
-            $productQuery = $productQuery->whereHas('category', function($q) {
+            $productQuery = $productQuery->whereHas('category', function ($q) {
                 $q->whereIn('slug', $this->selected_categories);
             });
         }
 
         if (!empty($this->selected_brands)) {
-            $productQuery = $productQuery->whereHas('brand', function($q) {
+            $productQuery = $productQuery->whereHas('brand', function ($q) {
                 $q->whereIn('slug', $this->selected_brands);
             });
         }
@@ -77,14 +77,14 @@ class ProductsPage extends Component
             $productQuery = $productQuery->where('on_sale', 1);
         }
 
-        if  ($this->price_range > 0) {
+        if ($this->price_range > 0) {
             $productQuery = $productQuery->whereBetween('price', [1000, $this->price_range]);
         }
 
         if ($this->sort_by === 'price-high-to-low') {
             $productQuery = $productQuery->orderBy('price', 'desc');
-        } 
-        
+        }
+
         if ($this->sort_by === 'latest') {
             $productQuery = $productQuery->latest();
         }

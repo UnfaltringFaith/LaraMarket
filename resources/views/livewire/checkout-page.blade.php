@@ -160,8 +160,8 @@
 				</div>
 				</hr>
 			</div>
-			<button type="submit" class="cursor-pointer bg-green-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-green-600">
-				Place Order
+			<button type="submit" class="cursor-pointer bg-green-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-green-600" wire:loading.class="bg-neutral-400">
+				<span wire:loading.remove wire:target="checkout()">Complete Order</span> <span wire:loading wire:target="checkout()"> Processing</span>
 			</button>
 			<div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
 				<div class="\ttext-xl font-bold underline text-gray-700 dark:text-white mb-2">

@@ -16,6 +16,7 @@ class HomePage extends Component
             ->get();
 
         $categories = \App\Models\Category::where('is_active', 1)
+            ->limit(4)
             ->get();
         return view('livewire.home-page', compact('brands', 'categories'));
         // layout('components.layouts.app', ['title' => 'Главная']);
